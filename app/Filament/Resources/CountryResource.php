@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CountryResource\Pages;
 use App\Filament\Resources\CountryResource\RelationManagers;
+use App\Filament\Resources\CountryResource\RelationManagers\EmployeeRelationManager;
 use App\Models\Country;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
@@ -67,7 +68,7 @@ class CountryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EmployeeRelationManager::class,
         ];
     }
 

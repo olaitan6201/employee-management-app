@@ -63,7 +63,7 @@ class EmployeeResource extends Resource
                         TextInput::make('firstname')->required()->maxLength(255),
                         TextInput::make('lastname')->required()->maxLength(255),
                         TextInput::make('address')->required()->maxLength(255),
-                        TextInput::make('zip_code')->required()->maxLength(5),
+                        TextInput::make('zip_code')->required()->maxLength(7),
                         DatePicker::make('birth_date')->required(),
                         DatePicker::make('date_hired')->required(),
                     ])
