@@ -60,10 +60,10 @@ class EmployeeResource extends Resource
                             ->reactive()->required(),
 
                         Select::make('department_id')->relationship('department', 'name')->required(),
-                        TextInput::make('firstname')->required(),
-                        TextInput::make('lastname')->required(),
-                        TextInput::make('address')->required(),
-                        TextInput::make('zip_code')->required(),
+                        TextInput::make('firstname')->required()->maxLength(255),
+                        TextInput::make('lastname')->required()->maxLength(255),
+                        TextInput::make('address')->required()->maxLength(255),
+                        TextInput::make('zip_code')->required()->maxLength(5),
                         DatePicker::make('birth_date')->required(),
                         DatePicker::make('date_hired')->required(),
                     ])
