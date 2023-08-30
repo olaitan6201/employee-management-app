@@ -4,7 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Employee;
+use App\Models\State;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
@@ -31,9 +34,31 @@ class EmployeeResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
-                        Select::make('country_id')->relationship('country', 'name')->required(),
-                        Select::make('state_id')->relationship('state', 'name')->required(),
-                        Select::make('city_id')->relationship('city', 'name')->required(),
+                        Select::make('country_id')
+                            ->label('Country')
+                            ->options(Country::all()->pluck('name', 'id')->toArray())
+                            ->reactive()->required()
+                            ->afterStateUpdated(fn (callable $set) => $set('state_id', '')),
+
+                        Select::make('state_id')
+                            ->label('State')
+                            ->options(function (callable $get) {
+                                return State::whereCountryId($get('country_id'))->get()
+                                    ->pluck('name', 'id')
+                                    ->toArray();
+                            })
+                            ->reactive()->required()
+                            ->afterStateUpdated(fn (callable $set) => $set('city_id', '')),
+
+                        Select::make('city_id')
+                            ->label('City')
+                            ->options(function (callable $get) {
+                                return City::whereStateId($get('state_id'))->get()
+                                    ->pluck('name', 'id')
+                                    ->toArray();
+                            })
+                            ->reactive()->required(),
+
                         Select::make('department_id')->relationship('department', 'name')->required(),
                         TextInput::make('firstname')->required(),
                         TextInput::make('lastname')->required(),
